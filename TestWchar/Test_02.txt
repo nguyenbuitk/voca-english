@@ -1,0 +1,5 @@
+one:một
+6
+four:bốn
+five:năm
+six:sáu

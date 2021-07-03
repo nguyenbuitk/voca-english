@@ -1,0 +1,10 @@
+﻿  console.cpp
+  Source.cpp
+D:\Document\English\06_Vocabulary\Code\VocaEnglish\TestWchar\Source.cpp(103,34): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\Document\English\06_Vocabulary\Code\VocaEnglish\TestWchar\Source.cpp(185,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Document\English\06_Vocabulary\Code\VocaEnglish\TestWchar\Source.cpp(237,52): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
+D:\Document\English\06_Vocabulary\Code\VocaEnglish\TestWchar\Source.cpp(238,56): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
+D:\Document\English\06_Vocabulary\Code\VocaEnglish\TestWchar\Source.cpp(239,102): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
+D:\Document\English\06_Vocabulary\Code\VocaEnglish\TestWchar\Source.cpp(48): warning C4715: 'key': not all control paths return a value
+  TestWchar.vcxproj -> D:\Document\English\06_Vocabulary\Code\VocaEnglish\x64\Debug\TestWchar.exe
