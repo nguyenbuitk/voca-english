@@ -55,42 +55,39 @@ public:
 	wstring loaiTu;
 };
 
-void printVecWstring(vector<wstring> vec) {
-	for (int i = 0; i < vec.size() - 1; i++)
-		wcout << vec[i] << ", ";
-	wcout << vec[vec.size() - 1];
-}
-
 int tableChoose(vector<wstring> temp, int k) {	// k = stt bảng chọn
 	int indexChoose = 0;
+	int preIndexChoose;
 	system("cls");
 	wstring title_0 = L"Choose file you want to practice:";
 	wstring title_1 = L"Choose language you want to practice:";
+
+	// Print title of table
+	TextColor(15);
+	clrscr();
+	if (k == 0)
+		wcout << setw(windowWidth / 2 + title_0.length() / 2) << title_0;
+	else if (k == 1)
+		wcout << setw(windowWidth / 2 + title_1.length() / 2) << title_1;
+	wcout << endl << endl;
+
+	// Print option choose
+	TextColor(colorNotChoose);
+	wcout << setw(windowWidth / 2 - temp[0].length() / 2 - 1) << " ";
+	TextColor(colorChoose);
+	wcout << temp[0] << endl;
+
+	// Prin options not choose
+	for (int i = 1; i < temp.size(); i++) {
+		TextColor(colorNotChoose);
+		//if (temp[i].length() % 2 == 1)
+		wcout << setw(windowWidth / 2 + temp[i].length() / 2) << temp[i] << endl;
+		//else wcout << setw(windowWidth / 2 + temp[i].length() / 2 - 1) << temp[i] << endl;
+	}
+
 	while (1)
 	{
-		TextColor(15);
-		clrscr();
-		if (k == 0)
-			wcout << setw(windowWidth / 2 + title_0.length() / 2) << title_0;
-		else if (k == 1)
-			wcout << setw(windowWidth / 2 + title_1.length() / 2) << title_1;
-		wcout << endl << endl;
-
-		for (int i = 0; i < temp.size(); i++) {
-			if (i == indexChoose) {
-				TextColor(colorNotChoose);
-				wcout << setw(windowWidth / 2 - temp[i].length() / 2 - 1) << " ";
-				TextColor(colorChoose);
-				wcout << temp[i] << endl;
-			}
-			else {
-				TextColor(colorNotChoose);
-				if (temp[i].length() % 2 == 1)
-					wcout << setw(windowWidth / 2 + temp[i].length() / 2) << temp[i] << endl;
-				else wcout << setw(windowWidth / 2 + temp[i].length() / 2 - 1) << temp[i] << endl;
-			}
-		}
-
+		preIndexChoose = indexChoose;
 		int k = _getch();
 		TrangThai cur = key(k);
 		if (cur == DOWN) {
@@ -98,15 +95,23 @@ int tableChoose(vector<wstring> temp, int k) {	// k = stt bảng chọn
 			if (indexChoose == temp.size())
 				indexChoose = 0;
 		}
-		if (cur == UPUP) {
+		else if (cur == UPUP) {
 			indexChoose--;
 			if (indexChoose == -1)
 				indexChoose = temp.size() - 1;
 		}
-		if (cur == ENTER)
+		else if (cur == ENTER)
 		{
 			return indexChoose;
 		}
+		gotoXY(0, preIndexChoose + 2);
+		TextColor(colorNotChoose);
+		wcout << setw(windowWidth / 2 + temp[preIndexChoose].length() / 2) << temp[preIndexChoose] << endl;
+
+		gotoXY(0, indexChoose + 2);
+		wcout << setw(windowWidth / 2 - temp[indexChoose].length() / 2 - temp[indexChoose].length()%2) << " ";
+		TextColor(colorChoose);
+		wcout << temp[indexChoose];
 	}
 }
 
@@ -176,7 +181,7 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 	wcout << L"Number of word: " << listWord.size() << endl << endl;
 	int length = listWord.size();
 	int lengthTemp = length;
-	wcout <<L"length of list"<< length << endl;
+	wcout << L"length of list" << length << endl;
 	// Trả lời bằng tiếng anh
 	if (!kOL) {
 		for (int i = 0; i < length; i++) {
@@ -186,7 +191,7 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 			int viTriYDauDong = whereY();
 
 			wcout << L"[" << i + 1 << L"] " << listWord[rn].viet;
-			
+
 
 			//// Nếu là từ lặp thì hiển thị thêm phần loại từ
 			//for (int i = 0; i < listWordLap.size(); i++) {
@@ -230,7 +235,7 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 					lengthAllViet += listWord[rn].viet.length();
 				lengthAllViet += (listWord[rn].viet.size() - 1) * 2;
 				gotoXY(viTriXDauDong + offsetBlank + listWord[rn].english.length() + lengthAllViet, viTriYDauDong);
-				wcout << "(" <<listWord[rn].loaiTu<<" - "<< listWord[rn].ipa << ")" << endl;
+				wcout << "(" << listWord[rn].loaiTu << " - " << listWord[rn].ipa << ")" << endl;
 			}
 			listWord.erase(listWord.begin() + rn);
 			lengthTemp--;
@@ -243,21 +248,21 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 		{
 			int rn = rand() % lengthTemp;
 			wstring a;
-			wcout << L"[" << i + 1 << L"] " << listWord[rn].english << "("<<listWord[rn].loaiTu<<" - " << listWord[rn].ipa << "): ";
+			wcout << L"[" << i + 1 << L"] " << listWord[rn].english << "(" << listWord[rn].loaiTu << " - " << listWord[rn].ipa << "): ";
 			rewind(stdin);
 			int xTruoc = whereX(), yTruoc = whereY();
-	
+
 			getline(wcin, a);
-			int xDau = whereX(), yDau=whereY();
+			int xDau = whereX(), yDau = whereY();
 			int flag_99 = 0;
 
 			// Kiểm tra xem trùng 1 trong các từ tiếng việt
 			// for (int i = 0; i < listWord[rn].viet.size(); i++)
 			//if (1 || a == listWord[rn].viet || a == L"c") {
-				gotoXY(xTruoc, yTruoc);
-				wcout << listWord[rn].viet<<endl;
-				flag_99 = 1;
-				
+			gotoXY(xTruoc, yTruoc);
+			wcout << listWord[rn].viet << endl;
+			flag_99 = 1;
+
 			//}
 
 			// Nếu trả lời sai tức là không trùng với từ nào trong list từ tiếng viết
@@ -265,7 +270,7 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 				eachRow temp;
 				temp = listWord[rn];
 				listWrongWord.push_back(temp);
-			
+
 				wcout << listWord[rn].viet;
 				wcout << endl;
 				wcout << L"nhap lai tu nay " << numberRetype << L" lan: " << endl;
@@ -275,7 +280,7 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 					do {
 						rewind(stdin);
 						getline(wcin, fail);
-						
+
 						// Nếu nhập phím 'd' thì pop list từ sai.
 						if (fail == L"d")
 						{
