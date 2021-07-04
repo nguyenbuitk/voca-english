@@ -63,12 +63,12 @@ int tableChoose(vector<wstring> temp, int k) {	// k = stt bảng chọn
 	wstring title_1 = L"Choose language you want to practice:";
 
 	// Print title of table
-	TextColor(15);
-	clrscr();
+	TextColor(colorNotChoose);
 	if (k == 0)
 		wcout << setw(windowWidth / 2 + title_0.length() / 2) << title_0;
 	else if (k == 1)
 		wcout << setw(windowWidth / 2 + title_1.length() / 2) << title_1;
+	TextColor(colorNotChoose);
 	wcout << endl << endl;
 
 	// Print option choose
@@ -113,6 +113,7 @@ int tableChoose(vector<wstring> temp, int k) {	// k = stt bảng chọn
 		TextColor(colorChoose);
 		wcout << temp[indexChoose];
 	}
+	TextColor(colorNotChoose);
 }
 
 int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng tiếng viet: 1, english: 0)
