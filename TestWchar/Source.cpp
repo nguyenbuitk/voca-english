@@ -56,9 +56,10 @@ public:
 };
 
 int tableChoose(vector<wstring> temp, int k) {	// k = stt bảng chọn
+	TextColor(colorNotChoose);
+	system("cls");
 	int indexChoose = 0;
 	int preIndexChoose;
-	system("cls");
 	wstring title_0 = L"Choose file you want to practice:";
 	wstring title_1 = L"Choose language you want to practice:";
 
@@ -68,14 +69,14 @@ int tableChoose(vector<wstring> temp, int k) {	// k = stt bảng chọn
 		wcout << setw(windowWidth / 2 + title_0.length() / 2) << title_0;
 	else if (k == 1)
 		wcout << setw(windowWidth / 2 + title_1.length() / 2) << title_1;
-	TextColor(colorNotChoose);
 	wcout << endl << endl;
 
 	// Print option choose
-	TextColor(colorNotChoose);
 	wcout << setw(windowWidth / 2 - temp[0].length() / 2 - 1) << " ";
 	TextColor(colorChoose);
-	wcout << temp[0] << endl;
+	wcout << temp[0];
+	TextColor(colorNotChoose);
+	wcout<< endl;
 
 	// Prin options not choose
 	for (int i = 1; i < temp.size(); i++) {
@@ -182,7 +183,6 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 	wcout << L"Number of word: " << listWord.size() << endl << endl;
 	int length = listWord.size();
 	int lengthTemp = length;
-	wcout << L"length of list" << length << endl;
 	// Trả lời bằng tiếng anh
 	if (!kOL) {
 		for (int i = 0; i < length; i++) {
@@ -248,26 +248,23 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 		for (int i = 0; i < length; i++)
 		{
 			int rn = rand() % lengthTemp;
-			wstring a;
+			wstring a, res;
 			wcout << L"[" << i + 1 << L"] " << listWord[rn].english << "(" << listWord[rn].loaiTu << " - " << listWord[rn].ipa << "): ";
-			rewind(stdin);
 			int xTruoc = whereX(), yTruoc = whereY();
 
-			getline(wcin, a);
+			rewind(stdin);
+			int c = _getch();
 			int xDau = whereX(), yDau = whereY();
-			int flag_99 = 0;
 
-			// Kiểm tra xem trùng 1 trong các từ tiếng việt
-			// for (int i = 0; i < listWord[rn].viet.size(); i++)
-			//if (1 || a == listWord[rn].viet || a == L"c") {
 			gotoXY(xTruoc, yTruoc);
 			wcout << listWord[rn].viet << endl;
-			flag_99 = 1;
 
+			//rewind(stdin);
+			//getline(wcin, res);
 			//}
 
 			// Nếu trả lời sai tức là không trùng với từ nào trong list từ tiếng viết
-			if (!flag_99) {
+			if (res == L"b") {
 				eachRow temp;
 				temp = listWord[rn];
 				listWrongWord.push_back(temp);
@@ -275,6 +272,7 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 				wcout << listWord[rn].viet;
 				wcout << endl;
 				wcout << L"nhap lai tu nay " << numberRetype << L" lan: " << endl;
+				/*
 				for (int i = 0; i < numberRetype; i++) {
 					wstring fail;
 					bool tempBreak = 0;
@@ -298,6 +296,7 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 					if (tempBreak)
 						break;
 				}
+				*/
 			}
 			listWord.erase(listWord.begin() + rn);
 			lengthTemp--;
@@ -379,27 +378,27 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 	}
 
 	//// Sửa số lần đã đọc file
-	fin.seekg(0);
-	wstring temptemp;
-	size_t pos_0 = 0, pos_1 = 0;
-	int number_0 = std::stoi(numberAnswerByEng, &pos_0);
-	int number_1 = std::stoi(numberAnswerByVie, &pos_1);
-	if (!kOL) {				// trả lời bằng tiếng anh
-		number_0++;
-		fin << number_0;
-		fin.close();
-	}
-	else {
-		number_1++;
-		fin << number_0 << L"\n";
-		fin << number_1;
-		fin.close();
-	}
-	wcout << endl << "Press 'c' to continue: ";
-	wchar_t finish;
-	do {
-		wcin >> finish;
-	} while (finish != 'c');
+	//fin.seekg(0);
+	//wstring temptemp;
+	//size_t pos_0 = 0, pos_1 = 0;
+	//int number_0 = std::stoi(numberAnswerByEng, &pos_0);
+	//int number_1 = std::stoi(numberAnswerByVie, &pos_1);
+	//if (!kOL) {				// trả lời bằng tiếng anh
+	//	number_0++;
+	//	fin << number_0;
+	//	fin.close();
+	//}
+	//else {
+	//	number_1++;
+	//	fin << number_0 << L"\n";
+	//	fin << number_1;
+	//	fin.close();
+	//}
+	//wcout << endl << "Press 'c' to continue: ";
+	//wchar_t finish;
+	//do {
+	//	wcin >> finish;
+	//} while (finish != 'c');
 	return 1;
 }
 
@@ -408,7 +407,6 @@ void run() {
 	int index_1, index_2, index_3;
 	while (1) {
 		if (screen_1) {
-			system("cls");
 			index_1 = tableChoose(chooseNameFiles, 0);
 			if (index_1 == chooseNameFiles.size() - 1)
 				return;
@@ -417,7 +415,6 @@ void run() {
 		}
 
 		if (screen_2) {
-			system("cls");
 			wstring link = L"D:/Document/English/06_Vocabulary/VocaText/" + chooseNameFiles[index_1] + L".txt";
 			index_2 = tableChoose(chooseEngViet, 1);
 			wfstream fin(link);
@@ -432,7 +429,6 @@ void run() {
 		}
 
 		if (screen_3) {
-			system("cls");
 			index_3 = tableChoose(chooseWhenFinish, 2);
 			if (index_3 == 2)
 				return;
