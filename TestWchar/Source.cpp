@@ -76,7 +76,7 @@ int tableChoose(vector<wstring> temp, int k) {	// k = stt bảng chọn
 	TextColor(colorChoose);
 	wcout << temp[0];
 	TextColor(colorNotChoose);
-	wcout<< endl;
+	wcout << endl;
 
 	// Prin options not choose
 	for (int i = 1; i < temp.size(); i++) {
@@ -110,7 +110,7 @@ int tableChoose(vector<wstring> temp, int k) {	// k = stt bảng chọn
 		wcout << setw(windowWidth / 2 + temp[preIndexChoose].length() / 2) << temp[preIndexChoose] << endl;
 
 		gotoXY(0, indexChoose + 2);
-		wcout << setw(windowWidth / 2 - temp[indexChoose].length() / 2 - temp[indexChoose].length()%2) << " ";
+		wcout << setw(windowWidth / 2 - temp[indexChoose].length() / 2 - temp[indexChoose].length() % 2) << " ";
 		TextColor(colorChoose);
 		wcout << temp[indexChoose];
 	}
@@ -157,28 +157,10 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 		rewind(stdin);
 		getline(fin, temp.viet);
 
-		// // Tách các nghía tiếng việt của một từ tiếng anh
-		//wstring delimiter = L", ";
-		//size_t pos = 0;
-		//wstring token;
-		//while ((pos = tempAllViet.find(delimiter)) != string::npos) {
-		//	token = tempAllViet.substr(0, pos);
-		//	temp.viet.push_back(token);
-		//	tempAllViet.erase(0, pos + delimiter.length());
-		//}
-		//temp.viet.push_back(tempAllViet);
-
 		if (fin)
 			listWord.push_back(temp);
 	}
 
-	//// Kiểm tra các từ lặp, nếu có từ trùng thì cho vào list từ lặp
-	//for (int i = 0; i < listWord.size() - 1; i++) {
-	//	for (int j = i + 1; j < listWord.size(); j++) {
-	//		if (listWord[i].viet[0] == listWord[j].viet[0])
-	//			listWordLap.push_back(listWord[i].viet[0]);
-	//	}
-	//}
 
 	wcout << L"Number of word: " << listWord.size() << endl << endl;
 	int length = listWord.size();
@@ -257,47 +239,19 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 			int xDau = whereX(), yDau = whereY();
 
 			gotoXY(xTruoc, yTruoc);
-			wcout << listWord[rn].viet << endl;
+			wcout << listWord[rn].viet;
+			int coorX = whereX();
+			int coorY = whereY();
 
-			//rewind(stdin);
-			//getline(wcin, res);
-			//}
+			int d = _getch();
 
 			// Nếu trả lời sai tức là không trùng với từ nào trong list từ tiếng viết
-			if (res == L"b") {
-				eachRow temp;
-				temp = listWord[rn];
-				listWrongWord.push_back(temp);
-
-				wcout << listWord[rn].viet;
-				wcout << endl;
-				wcout << L"nhap lai tu nay " << numberRetype << L" lan: " << endl;
-				/*
-				for (int i = 0; i < numberRetype; i++) {
-					wstring fail;
-					bool tempBreak = 0;
-					do {
-						rewind(stdin);
-						getline(wcin, fail);
-
-						// Nếu nhập phím 'd' thì pop list từ sai.
-						if (fail == L"d")
-						{
-							listWrongWord.pop_back();
-							gotoXY(xDau, yDau);
-							wcout << L"                                                         " << endl;
-							wcout << L"                                                         " << endl;
-							wcout << L"                                                         " << endl;
-							gotoXY(xDau, yDau);
-							tempBreak = 1;
-							break;
-						}
-					} while (fail != listWord[rn].viet);
-					if (tempBreak)
-						break;
-				}
-				*/
+			if (d == 'w') {
+				gotoXY(coorX, coorY);
+				wcout << L" | added to wrong list" << endl;
+				listWrongWord.push_back(listWord[rn]);
 			}
+			wcout << endl;
 			listWord.erase(listWord.begin() + rn);
 			lengthTemp--;
 		}
@@ -310,25 +264,14 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 		wcout << "No words wrong!";
 	else {
 
-		wcout << L"You have " << listWrongWord.size() << L" word wrong accounting " << (int)(((double)listWrongWord.size() / length) * 100) << L"(%) all word!" << endl;
-		wcout << L"Practic again words wrong: " << endl;
+		wcout << L"You have " << listWrongWord.size() << L" word wrong accounting " << (int)(((double)listWrongWord.size() / length) * 100) << L"(%) all word!" << endl << endl;
+
 		for (int i = 0; i < listWrongWord.size(); i++) {
-			wcout << listWrongWord[i].english << " (";
-			for (int k = 0; k < listWordLap.size(); k++)
-				if (listWrongWord[i].viet == listWordLap[k])
-					wcout << listWrongWord[i].loaiTu << " - ";
-			wcout << listWrongWord[i].ipa << L"): ";
+			wcout << L"[" << i + 1 << L"] " << listWrongWord[i].english << "(" << listWrongWord[i].loaiTu << " - " << listWrongWord[i].ipa << "): " << listWrongWord[i].viet << endl;
 
-
-			int j = 0;
-			for (j; j < listWrongWord[i].viet.size() - 1; j++) {
-				wcout << listWrongWord[i].viet[j] << ", ";
-			}
-			wcout << listWrongWord[i].viet[j] << endl;
 		}
-		wcout << "========================" << endl;
 		int _xx = whereX(); int _yy = whereY();
-
+		_getch();
 		// Trả lời bằng từ sai bằng tiếng anh
 		if (!kOL) {
 			for (int i = 0; i < numberRetypeFinish; i++) {
@@ -356,24 +299,6 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 		}
 
 		// Trả lời từ sai bằng tiếng việt
-		else {
-			for (int i = 0; i < numberRetypeFinish; i++) {
-				gotoXY(_xx, _yy);
-				for (int j = 0; j < listWrongWord.size() * 2; j++) {
-					wcout << "                                                                 " << endl;
-				}
-				gotoXY(_xx, _yy);
-				for (int p = 0; p < listWrongWord.size(); p++) {
-
-					wcout << listWrongWord[p].english << L": ";
-					wstring _temp;
-					do {
-						rewind(stdin);
-						getline(wcin, _temp);
-					} while (_temp != listWrongWord[p].viet);
-				}
-			}
-		}
 
 	}
 
