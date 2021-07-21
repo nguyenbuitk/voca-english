@@ -172,29 +172,26 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 			wstring a;
 			int viTriXDauDong = whereX();
 			int viTriYDauDong = whereY();
+			wcout << L"[" << i + 1 << L"] " << listWord[rn].viet << ": ";
 
-			wcout << L"[" << i + 1 << L"] " << listWord[rn].viet;
-
-
-			//// Nếu là từ lặp thì hiển thị thêm phần loại từ
-			//for (int i = 0; i < listWordLap.size(); i++) {
-			//	if (listWord[rn].viet[0] == listWordLap[i])
-			//		wcout << " (" << listWord[rn].loaiTu << ")";
-			//}
-
-			wcout << ": ";
 			rewind(stdin);
 			getline(wcin, a);
 			int flag_99 = 0;
 
+		
+
 			// Trả lời sai
 			if (a != listWord[rn].english)
 			{
-				eachRow temp;
-				temp = listWord[rn];
-				listWrongWord.push_back(temp);
-				wcout << "(" << listWord[rn].ipa << "): " << listWord[rn].english << endl;
-				wcout << L"nhap lai tu nay " << numberRetype << L" lan: " << endl;
+				int offsetBlank;
+				if (i < 9)
+					offsetBlank = 7;
+				else offsetBlank = 8;
+
+				listWrongWord.push_back(listWord[rn]);
+				gotoXY(viTriXDauDong + offsetBlank + listWord[rn].viet.length() + a.length(), viTriYDauDong);
+				wcout << "-- (" << listWord[rn].ipa << "): " << listWord[rn].english << endl;
+				wcout << L"nhap lai tu nay " << numberRetype << L" lan: ";
 				for (int i = 0; i < numberRetype; i++) {
 					wstring fail;
 					do {
@@ -206,18 +203,14 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 				}
 			}
 
-			// hiển thị ipa khi trả lời đúng bằng tiếng anh
+			// Trả lời đúng
 			if (a == listWord[rn].english)
 			{
 				int offsetBlank;
 				if (i < 9)
 					offsetBlank = 7;
 				else offsetBlank = 8;
-				int lengthAllViet = 0;
-				for (int i = 0; i < listWord[rn].viet.size(); i++)
-					lengthAllViet += listWord[rn].viet.length();
-				lengthAllViet += (listWord[rn].viet.size() - 1) * 2;
-				gotoXY(viTriXDauDong + offsetBlank + listWord[rn].english.length() + lengthAllViet, viTriYDauDong);
+				gotoXY(viTriXDauDong + offsetBlank + listWord[rn].english.length() + listWord[rn].viet.length(), viTriYDauDong);
 				wcout << "(" << listWord[rn].loaiTu << " - " << listWord[rn].ipa << ")" << endl;
 			}
 			listWord.erase(listWord.begin() + rn);
@@ -236,19 +229,15 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 
 			rewind(stdin);
 			int c = _getch();
-			int xDau = whereX(), yDau = whereY();
+			wcout << listWord[rn].viet;
 
 			gotoXY(xTruoc, yTruoc);
 			wcout << listWord[rn].viet;
-			int coorX = whereX();
-			int coorY = whereY();
 
 			int d = _getch();
-
 			// Nếu trả lời sai tức là không trùng với từ nào trong list từ tiếng viết
-			if (d == 'w') {
-				gotoXY(coorX, coorY);
-				wcout << L" | added to wrong list" << endl;
+			if (d == 'w' || d == 's') {
+				wcout << L" | added to wrong list";
 				listWrongWord.push_back(listWord[rn]);
 			}
 			wcout << endl;
@@ -297,8 +286,6 @@ int answer(wfstream& fin, int kOL)		// kOL: kind of language (trả lời bằng
 				}
 			}
 		}
-
-		// Trả lời từ sai bằng tiếng việt
 
 	}
 
